@@ -1,7 +1,7 @@
 
 const fetch = require('node-fetch')
 
-function check(url, invocationParameters,  expectedResultData, expectedResultStatus) {
+exports.check = function(url, invocationParameters,  expectedResultData, expectedResultStatus) {
 
     const checkResult = { // this is the object you need to set and return
         urlChecked: url,
@@ -11,8 +11,31 @@ function check(url, invocationParameters,  expectedResultData, expectedResultSta
         resultDataAsExpected: null
     }
 
+    var i = 0;
+    url += "?";
+    for(var name in invocationParameters) {
+        url += name + "=" + invocationParameters[name] + "&";
+    }
 
+    url = url.substring(0, url.length - 1);
 
+    var fetchObject;
+
+    console.log("url: " + url);
+    return fetch(url)
+        .then(response =>
+            response.json()
+        )
+        .then(json => {
+            console.log(json)
+
+            var compared = compareResults(expectedResultData,json)
+
+            checkResult.resultData = json;
+            checkResult.resultDataAsExpected = compared
+            console.log(checkResult)
+            return checkResult;
+        });
 }
 
 
@@ -27,4 +50,4 @@ function compareResults(expected, actual) {
     return true
 }
 
-module.exports = check
+//module.exports = check
