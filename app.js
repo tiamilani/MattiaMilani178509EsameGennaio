@@ -17,7 +17,7 @@ app.get('/count',function (req, res) {
 
 app.post('/check',function (req, res) {
     const parameter = req.body;
-    check.check("https://mattiamilani178509esamegennaio.herokuapp.com/count", {}, {count: 3}, 200)
+    check.check(parameter.url, parameter.invocationParameters, parameter.expectedResultData, parameter.expectedResultStatus)
         .then(result => {
             res.json(result)
         });
