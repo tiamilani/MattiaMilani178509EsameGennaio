@@ -16,7 +16,7 @@ app.get('/count',function (req, res) {
 })
 
 app.post('/check',function (req, res) {
-    const parameter = req.body;
+    const parameter = JSON.parser(req.body);
     check.check(parameter.url, parameter.invocationParameters, parameter.expectedResultData, parameter.expectedResultStatus)
         .then(result => {
             res.json(result)
